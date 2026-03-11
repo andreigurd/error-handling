@@ -1,14 +1,14 @@
 import requests
 
-# Try requesting:
-# - A valid endpoint: `https://api.github.com/users/github`
-# - An invalid endpoint: `https://api.github.com/users/DEFINITELY_NOT_A_REAL_USER_123456789`
-# - A malformed URL: `https://api.github.com/this/does/not/exist`
-
-# For each, print:
-# - The status code
-# - Whether the request was successful (`response.ok` is a boolean)
-# - A user-friendly message based on the status code
+common_codes = {
+    400: "Bad Request",
+    401: "Unauthorized",
+    403: "Forbidden - You're not allowed to access this",
+    404: "Not Found - That resource doesn't exist",
+    429: "Too Many Requests - You're making requests too fast",
+    500: "Internal Server Error - Something broke on the server",
+    503: "Service Unavailable - Server is down or overloaded"
+}
 
 
 #--------------------------- (A valid endpoint)
@@ -16,12 +16,13 @@ url = "https://api.github.com/users/github"
 
 response = requests.get(url)
 
-print("Status Code:", response.status_code)
-
-if response.status_code == 200:    
-    print("Request Successfull")
-else:
-    print('Source not found.')
+# response.ok boolean indicates true or false if code is in range 200-299
+print("\nRequest for: https://api.github.com/users/github")
+if response.ok == True:
+    print(f'Status Code: {response.status_code}')  
+    print('Request successful. ')
+else:    
+    print(f'Request Failed. Status Code: {response.status_code} {common_codes[response.status_code]}')
 
 #--------------------------- (An invalid endpoint)
 
@@ -29,12 +30,12 @@ url = 'https://api.github.com/users/DEFINITELY_NOT_A_REAL_USER_123456789'
 
 response = requests.get(url)
 
-print("Status Code:", response.status_code)
-
-if response.status_code == 200:    
-    print("Request Successfull")
-else:
-    print('Source not found.')
+print('\nRequest for: https://api.github.com/users/DEFINITELY_NOT_A_REAL_USER_123456789')
+if response.ok == True:
+    print(f'Status Code: {response.status_code}')    
+    print('Request successful.')
+else:    
+    print(f'Request Failed. Status Code: {response.status_code} {common_codes[response.status_code]}')
 
 #--------------------------- (A malformed URL)
 
@@ -42,12 +43,11 @@ else:
 url = "https://api.github.com/this/does/not/exist"
 
 response = requests.get(url)
-
-print("Status Code:", response.status_code)
-
-if response.status_code == 200:    
-    print("Request Successfull")
+print("\nRequest for: https://api.github.com/this/does/not/exist")
+if response.ok == True:
+    print(f'Status Code: {response.status_code}')     
+    print('Request successful.')
 else:
-    print('Source not found.')
+    print(f'Request Failed. Status Code: {response.status_code} {common_codes[response.status_code]}')
 
 
